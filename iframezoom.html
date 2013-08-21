@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<script  type='text/javascript'>
+		function get_url_param( name )
+		{
+			name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+
+			var regexS = "[\\?&]"+name+"=([^&#]*)";
+			var regex = new RegExp( regexS );
+			var results = regex.exec( window.location.href );
+
+			if ( results == null )
+				return null;
+			else
+				return results[1];
+		}
+
+		var width;
+		var height;
+		var bgcolor;
+		var url;
+		var keepaspectratio;
+
+		function compute_iframe_style()
+		{
+			var viewportWidth = window.innerWidth;
+			var viewportHeight = window.innerHeight;
+
+			if( keepaspectratio == 1 )
+			{
+				if( ( viewportWidth / viewportHeight ) * height > width )
+					viewportWidth = viewportHeight * ( width / height );
+				else
+					viewportHeight = viewportWidth * ( height / width );
+			}
+
+			var xscale = viewportWidth / width;
+			var yscale = viewportHeight / height;
+			var scale = "scale(" + xscale + ", " + yscale + ");"
+
+			var iframeWidth = Math.floor( viewportWidth / xscale );
+			var iframeHeight = Math.floor( viewportHeight / yscale );
+
+			var iframe_style = "padding:0px;";
+			iframe_style += " margin:0px;";
+			iframe_style += " width:"+ iframeWidth +"px;";
+			iframe_style += " height:"+ iframeHeight +"px;";
+			iframe_style += " margin:0px;";
+			iframe_style += " -moz-transform: " + scale;
+			iframe_style += " -webkit-transform: " + scale; 
+			iframe_style += " -o-transform: " + scale;
+			iframe_style += " -ms-transform: " + scale;
+			iframe_style += " transform: " + scale;
+			iframe_style += " -moz-transform-origin: top left;";
+			iframe_style += " -webkit-transform-origin: top left;";
+			iframe_style += " -o-transform-origin: top left;";
+			iframe_style += " -ms-transform-origin: top left;";
+			iframe_style += " transform-origin: top left;";
+			iframe_style += " border: none;";
+
+			return iframe_style;
+		}
+
+		function update_iframe_style()
+		{
+			document.getElementById( "theIFrame" ).style = compute_iframe_style();
+		}
+
+		function create_iframe()
+		{
+			width = get_url_param( "width" );
+			height = get_url_param( "height" );
+			bgcolor = get_url_param( "bgcolor" );
+			url = get_url_param( "url" );
+
+			keepaspectratio = get_url_param( "keepaspectratio" );
+			if( keepaspectratio == null )
+				keepaspectratio = 1;
+
+			var params_given = width != null && height != null && bgcolor != null && url != null;
+			if( !params_given )
+			{
+				alert( "Please specify the URL parameters 'width', 'height', 'bgcolor' and 'url', e.g.\n\niframezoom.html?width=400&height=300&bgcolor=000000&url=http://apple.com\n\nParameters given:\n\nwidth: " + width + "\nheight: " + height + "\nbgcolor: " + bgcolor + "\nurl: " + url );
+				return;
+			}
+
+			document.body.style.background = '#' + bgcolor;
+
+			var iframe_style = compute_iframe_style();
+
+			var iframe_html = "<iframe id=\"theIFrame\"";
+			iframe_html += " src=\"" + url + "\"";
+			iframe_html += " scrolling=\"no\"";
+			iframe_html += " style=\"" + iframe_style + "\" >";
+			iframe_html += "</iframe>";
+			document.body.innerHTML = iframe_html;
+
+			window.onresize = update_iframe_style;
+		}
+	</script>
+</head>
+<body style="padding:0px; margin:0px; overflow: hidden;" onLoad="create_iframe()"></body>
+</html>
+
