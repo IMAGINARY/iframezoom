@@ -65,7 +65,7 @@
 
 		function update_iframe_style()
 		{
-			document.getElementById( "theIFrame" ).style = compute_iframe_style();
+			document.getElementById( "theIFrame" ).style.cssText = compute_iframe_style();
 		}
 
 		function create_iframe()
@@ -96,11 +96,9 @@
 			iframe_html += " style=\"" + iframe_style + "\" >";
 			iframe_html += "</iframe>";
 			document.body.innerHTML = iframe_html;
-
-			window.onresize = update_iframe_style;
 		}
 	</script>
 </head>
-<body style="padding:0px; margin:0px; overflow: hidden;" onLoad="create_iframe()"></body>
+<body style="padding:0px; margin:0px; overflow: hidden;" onload="create_iframe()" onresize="update_iframe_style()"></body>
 </html>
 
