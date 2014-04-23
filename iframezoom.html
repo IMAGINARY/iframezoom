@@ -47,7 +47,6 @@
 			iframe_style += " margin:0px;";
 			iframe_style += " width:"+ iframeWidth +"px;";
 			iframe_style += " height:"+ iframeHeight +"px;";
-			iframe_style += " margin:0px;";
 			iframe_style += " -moz-transform: " + scale;
 			iframe_style += " -webkit-transform: " + scale; 
 			iframe_style += " -o-transform: " + scale;
@@ -90,11 +89,11 @@
 
 			var iframe_style = compute_iframe_style();
 
-			var iframe_html = "<iframe id=\"theIFrame\"";
-			iframe_html += " src=\"" + url + "\"";
-			iframe_html += " scrolling=\"no\"";
-			iframe_html += " style=\"" + iframe_style + "\" >";
-			iframe_html += "</iframe>";
+			var iframe_html = '<iframe id="theIFrame"';
+			iframe_html += ' src="' + url + '"';
+			iframe_html += ' scrolling="no"';
+			iframe_html += ' style="' + iframe_style + '" >';
+			iframe_html += '</iframe>';
 			document.body.innerHTML = iframe_html;
 		}
 	</script>
